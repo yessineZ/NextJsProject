@@ -7,7 +7,6 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 const NavBar = () => {
   const [loading,setLoading] = useState<boolean>(false) ; 
   const { data: session, status } = useSession();
-
   useEffect(() => {
     if (status !== 'loading') {
       setLoading(false);
@@ -38,9 +37,12 @@ const NavBar = () => {
                 Logout
               </button>
 
-              <Link href={`/user/${session?.id}`}>
+              <div className='flex-between gap-3'>
+                <Link href={`/user/${session?.id}`}>
                 <span className="font-semibold">{session.user.name}</span>
               </Link>
+              <Image className='rounded-full' width={14} height={14} src={`/user/${session?.user.image}`} alt='Image'></Image> 
+              </div>
             </>
           ) : (
             <button
@@ -56,5 +58,4 @@ const NavBar = () => {
     </header>
   );
 };
-
 export default NavBar;

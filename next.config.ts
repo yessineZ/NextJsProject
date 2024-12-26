@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
   port : {
     default : 3000,
     https : 443,
+  },
+  experimental  : {
+    ppr : "incremental" , 
+    after : true 
+  },
+  devIndicators : {
+    appIsrStatus : true , 
+    buildActivity : true ,
+    buildActivityPosition  : 'bottom-right'
   }
 };
 

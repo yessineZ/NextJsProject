@@ -4,40 +4,42 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from './ui/button'
-
-const StartupCard = ({ post } : {post : StartupCardType }) => {
+import { Startup , Author } from '@/sanity.types'
+export type StartupTypeCard = Omit<Startup,"author">  & { author : Author } ;
+const StartupCard = ({ post } : {post : StartupTypeCard }) => {
+  const {_createdAt , views , author , category , _id , image , description , title } = post ; 
   return (
     <li className='startup-card group'>
         <div className='flex-between'>
           <p className='startup_card_date'>
-            {formatDate(post._createdAt)}
+            {formatDate(_createdAt)}
           </p>
           <div className='flex gap-1.5'>
             <EyeIcon className='text-red-600'/>
-            <span>{post.views}</span>
+            <span>{views}</span>
           </div>
         </div>
 
         <div className='flex-between mt-5 gap-5'>
           <div className='flex-1'>
-            <Link href={`/user/${post.author?._id}`}>
+            <Link href={`/user/${_id}`}>
              <p className='text-16-medium line-clamp-1'>
-                {post.author?.name}
+                {author?.name}
               </p> 
             </Link>
 
             <Link href={`/startup/${post._id}`}>
               <h2 className='text-26-semibold'>
-                {post.title}
+                {title}
               </h2>
             </Link>
           </div>
-            <Link href={`/user/${post.author?._id}`}>
+            <Link href={`/user/${author._id}`}>
         <Image src={'https://res.cloudinary.com/dj8fq0bd0/image/upload/v1722108376/z3waw0jxerhrmqzzxsat.png'} alt='placeholder' height={48} width={48} className='rounded-full' />
         </Link>
         </div>
 
-        <Link href={`/startup/${post._id}`}>
+        <Link href={`/startup/${_id}`}>
           <p className='startup-card_desc'>
             {post.description}
           </p>
@@ -45,14 +47,14 @@ const StartupCard = ({ post } : {post : StartupCardType }) => {
           <img src={post?.image} alt='placeholder' className='startup-card_img'/>
           
           <div className='flex-between gap-3 mt-5'>
-            <Link href={`/query=${post.category.toLowerCase()}`}>
+            <Link href={`/query=${category?.toLowerCase()}`}>
             <p className='text-16-medium'>
-              #{post.category}
+              #{category}
             </p>
 
             </Link>
             <Button className='startup-card_btn' asChild>
-                <Link href={`/startup/${post._id}`}>
+                <Link href={`/startup/${_id}`}>
                   Details
                 </Link>
             </Button>

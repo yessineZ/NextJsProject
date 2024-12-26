@@ -26,3 +26,6 @@ export const metadata = {
         title : "Home"
     }
 }
+
+
+npm i server-only  // insure that some modules are server sided only

@@ -1,37 +1,15 @@
-import Image from "next/image";
 import SearchForm from "../../components/SearchForm";
-import StartupCard from "@/components/StartupCard";
+import StartupCard , {StartupTypeCard} from "@/components/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/live";
+import { STARTUPS_QUERY } from "@/sanity/schemaTypes/queries";
 
 export default async function Home({ searchParams } : { searchParams : Promise<{query? : string}>}) {
  const query =  (await searchParams).query ; 
- const posts = [
-  {
-    _id : 1 ,
-    _createdAt: new Date() ,
-    views : 69 , 
-    author : {
-      _id : 1 , 
-      name : "misty"
-    } ,
-    description : "mistyBook",
-    image : "https://res.cloudinary.com/dj8fq0bd0/image/upload/v1721661637/samples/dessert-on-a-plate.jpg",
-    category : "Food" , 
-    title : "Misty's Delicious Dessert",
-  }
- ] 
- type StartupCardType = {
-   _id : number ,
-   _createdAt : Date ,
-   views : number ,
-   author : {
-     _id : number ,
-     name : string
-   } ,
-   description : string ,
-   image : string ,
-   category : string ,
-   title : string
- }
+ const params = { search : query || null } ;
+ const { data : posts } = await sanityFetch({query : STARTUPS_QUERY , params}) ;
+ console.log(JSON.stringify(posts,null,2)) ;  
+ 
  return (
     <>
     <section className="pink_container">
@@ -58,10 +36,10 @@ export default async function Home({ searchParams } : { searchParams : Promise<{
       {posts && (
         posts
          .filter(post => 
-            query ? post.title.toLowerCase().includes(query.toLowerCase()) : true
+            query ? post?.title.toLowerCase().includes(query.toLowerCase()) : true
           )
          .sort((a, b) => Number(b._createdAt) - Number(a._createdAt))
-         .map((post : StartupCardType) => (
+         .map((post : StartupTypeCard) => (
             <StartupCard key={post._id} post={post}/>
           ))
       )}       
