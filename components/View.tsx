@@ -8,10 +8,9 @@ const View = async ({id} : {id : string}) => {
   const { views : totalViews } = await client.withConfig({useCdn : false }).fetch(STARTUP_BY_ID_QUERY,{id}) ;
 
 
-  after(
-     async () =>   await writeClient.patch(id).set({views : totalViews + 1}).commit()  
-
-  )
+  
+   const update  =   async () =>   await writeClient.patch(id).set({views : totalViews + 1}).commit()  
+   update() ;
   return (
     <div className='view-container'>
       <div className='absolute -top-2 -right-2'>

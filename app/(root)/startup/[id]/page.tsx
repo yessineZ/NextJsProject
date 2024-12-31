@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import View from '@/components/View' ;
 
-const page = async ({ params }: { params: { id: string } }) => {
+const page = async ({ params } : { params: { id: string } }) => {
   const { id } = params;
   const post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
 
